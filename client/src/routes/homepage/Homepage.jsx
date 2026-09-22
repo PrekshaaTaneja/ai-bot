@@ -10,7 +10,7 @@ const Homepage = () =>{
         <div className="homepage">
             <img src="./orbital.png" alt="" className="orbital"/>
             <div className="left">
-                <h1>GENIE AI</h1>
+                <h1>IntelliBot</h1>
                 <h2>Supercharge your creativtiy and productivity</h2>
                 <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos eius accusamus minima illo molestias.</h3>
                 <Link to="/dashboard">Get Started</Link>

@@ -15,7 +15,7 @@ const ChatList = () => {
     <div className="chatList">
       <span className="title">DASHBOARD</span>
       <Link to="/dashboard">Create a new Chat</Link>
-      <Link to="/">Explore Genie AI</Link>
+      <Link to="/">Explore IntelliBot</Link>
       <Link to="/">Contact</Link>
       <hr />
       <span className="title">RECENT CHATS</span>
@@ -34,7 +34,7 @@ const ChatList = () => {
       <div className="upgrade">
         <img src="/logo.png" alt="" />
         <div className="texts">
-          <span>Upgrade to Genie AI Pro</span>
+          <span>Upgrade to IntelliBot Pro</span>
           <span>Get unlimited access to all features</span>
         </div>
       </div>

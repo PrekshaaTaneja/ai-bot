@@ -36,7 +36,7 @@ const NewPrompt = ({ data }) => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: () => {
+    mutationFn: ({ question, answer, img }) => {
       return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
         method: "PUT",
         credentials: "include",
@@ -44,25 +44,22 @@ const NewPrompt = ({ data }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          question: question.length ? question : undefined,
+          question: question || undefined,
           answer,
-          img : img.dbData?.filePath || undefined,
+          img: img || undefined,
         }),
       }).then((res) => res.json());
     },
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["chat",data._id] }.then(()=>{
-        setQuestion("");
-        setAnswer("");
-        setImg({
-          isLoading: false,
-          error: "",
-          dbData: {},
-          aiData: {}
-        });
-      }));
-      navigate(`/dashboard/chats/${id}`);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["chat", data._id] });
+      setQuestion("");
+      setAnswer("");
+      setImg({
+        isLoading: false,
+        error: "",
+        dbData: {},
+        aiData: {},
+      });
     },
     onError: (error) => {
       console.error(error);
@@ -83,7 +80,11 @@ const NewPrompt = ({ data }) => {
         accumulatedText += chunkText;
         setAnswer(accumulatedText);
       }
-      mutation.mutate();
+      mutation.mutate({
+        question: isInitial ? "" : text,
+        answer: accumulatedText,
+        img: img.dbData?.filePath,
+      });
     }catch(err){
       console.error(err);
     }
@@ -107,6 +108,8 @@ const NewPrompt = ({ data }) => {
       }
     }
     hasRun.current = true;
+    // The initial prompt should be sent once when this chat mounts.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
